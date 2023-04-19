@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapy Krkonoš</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.23/"></script>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      
+    }
+
+    .wrapper {
+      display: flex;
+      flex-flow: row wrap;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .wrapper > * {
+      padding: 10px;
+      flex: 1 100%;
+    }
+
+    .header {
+      background: #0079c1;
+      height: 30px;
+    }
+    .footer {
+      background: #0079c1;
+      height: 30px;
+    }
+
+    .viewDiv {
+      min-height: 110px;
+      height: 100%;
+    }
+
+    .aside-left {
+      background: #6d6d6d;
+      
+    } 
+    
+    .aside-right {
+      background: rgb(193, 225, 170);
+      width: 50px;
+      
+    }
+
+    @media all and (min-width:544px){
+      .aside {
+        flex: 1 auto;
+      }
+    }
+
+    @media all and (min-width:780px){
+      .viewDiv {
+        flex: 3 0px;
+      }
+      
+      .viewDiv {
+        order: 1;
+      }
+      .aside-right {
+        order: 2;
+      }
+      .footer {
+        order: 3;
+      }
+    }
+
+    #seasons-filter {
+      height: 320px;
+      width: 100px;
+      visibility: hidden;
+    }
+
+    .season-item {
+      width: 100%;
+      padding: 12px;
+      text-align: center;
+      vertical-align: baseline;
+      cursor: pointer;
+      height: 40px;
+    }
+
+    .season-item:focus {
+      background-color: dimgrey;
+    }
+
+    .season-item:hover {
+      background-color: dimgrey;
+    }
+
+    .panel {
+        float: right;  
+        padding: 0px 10px 0px 10px;
+        width: 300px;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-left: 2px solid #9CC23D;
+    }
+
+    #titul {
+color: #9CC23D;
+font-size: 20px;
+font-family: 'Trebuchet MS',Arial,Helvetica,Sans-Serif;
+line-height:25px;
+text-align: left;
+}
+
+#uzemiRok{
+color: #000000;
+margin: 0;
+font-size: 15px;
+font-family: 'Trebuchet MS',Arial,Helvetica,Sans-Serif;
+height:20px;
+font-weight: bold;
+line-height:25px;
+
+}
+#popis{
+line-height: 18px;
+height:70px;
+margin-top: 10px;
+}
+
+#posuvnik{
+
+width:100%;
+text-align:center;
+}
+
+#prevB{
+width:40px;
+height:40px;
+float: left;
+display: inline-block;
+
+}
+
+
+#nextB{
+width:40px;
+height:40px;
+float: right;
+display: inline-block;
+
+}
+
+#posuR{
+display: inline-block;
+width:200px;
+height:40px;
+margin: 0;
+}
+
+#labely{
+width: 200px;
+text-align:center;
+
+}
+
+.lRok{
+line-height: 10px;
+transform: rotate(-90deg);
+display: inline-block;
+text-align:center;
+width:20px;
+vertical-align:middle;
+position:relative;
+top: -5px;
+}
+
+#volby{
+text-align:center;
+}
+
+#stred{
+width:200px;
+display: inline-block;
+}
+
+#rokyRange{
+text-align:center;
+color: #000000;
+
+width:190px;
+}
+
+select{
+width:200px
+}
+.jevSelect{
+  color: #000000;
+}
+option{
+  color: #000000;
+}
+
+.numSel {
+width:50px;
+}
+
+#legenda{
+display: table;
+}
+
+#oaplikaci{
+text-align: right;
+float:right;
+vertical-align:top;
+height:16px;
+}
+
+#horniRadek{
+height:16px;
+margin:0;
+padding: 0;
+}
+
+
+#nazevApp{
+float:left;
+text-align: right;
+font-size: 10px;
+font-family: Tahoma,Arial,Helvetica,Sans-Serif;
+font-weight: bold;
+vertical-align:top;
+height:16px;
+}
+
+
+
+  </style>
+
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">Header Flex</header>
+    <div id="seasons-filter" class="esri-widget">
+      <div class="season-item visible-season" data-season="SOH">Hostinné</div>
+      <div class="season-item visible-season" data-season="SOM">Maršov</div>
+      <div class="season-item visible-season" data-season="SOT">Trutnov</div>
+      <div class="season-item visible-season" data-season="SOJ">Jilemnice</div>
+      <div class="season-item visible-season" data-season="SOR">Rokytnice</div>
+      <div class="season-item visible-season" data-season="SOS">Vysoké n. J.</div>
+      <div class="season-item visible-season" data-season="SOV">Vrchlabí</div>
+      <div class="season-item visible-season" data-season="SOZ">Žacléř</div>
+    </div>
+    <div class="viewDiv" id="viewDiv"></div>
+    <!-- <aside class="aside aside-left"></aside> -->
+    <aside class="aside aside-right" id="titleDiv">
+      <div id="titleText">Mapy Prameny Krkonoš</div>
+        <div>Sčítání 2021</div>
+        <!-- <div class="panel"> -->
+            <div id="nazevApp">Interaktivní mapa obyvatelstva Prameny Krkonoš</div>
+            <div id="uzemiRok">
+              <span id="podtitul">Okresy </span><output id="rokText" for="rokyRange">1991</output>
+              </div>
+              <div id="popis">Sektor hospodářství (I - III), v které je zaměstnáno nejvíce osob</div>
+              <div id="nastaveni" style="display: block;">
+                <div id="posuvnik">
+                
+                
+                <div id="prevB">
+                  <button type="button" onclick="prevYear()" class="art-button">&lt;&lt;</button>
+                </div>
+                <div id="stred">
+                <div id="labely">
+                <div class="lRok" style="color: black;">1921</div>
+                <div class="lRok" style="color: black;">1931</div>
+                <div class="lRok" style="color: black;">1941</div>
+                <div class="lRok" style="color: black;">1951</div>
+                <div class="lRok" style="color: black;">1961</div>
+                <div class="lRok" style="color: black;">1971</div>
+                <div class="lRok" style="color: black;">1981</div>
+                <div class="lRok" style="color: black;">1991</div>
+                <div class="lRok" style="color: black;">2001</div>
+                <div class="lRok" style="color: black;">2021</div></div>
+                <div id="posuR">                
+                  <input type="range" id="rokyRange" min="0" max="9" list="volsettings" 
+                  value="9" onchange="cngRok(value)" name="rangeRok">                  
+                </div>
+              </div>                
+                  <div id="nextB">
+                  <button type="button" onclick="nextYear()" 
+                  class="art-button">&gt;&gt;</button></div>
+                <datalist id="volsettings">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option disabled="">4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                </datalist>
+                </div>
+                
+                <div id="modul">
+                <form>Modul:<br>
+                  <select id="modulSelect" name="modulSelect" >
+                  <option value="1">Demografická struktura</option>
+                  <option value="2">Národnost</option>
+                  <option value="3">Majetek</option>
+                  <option value="4">Rozloha</option>
+                  <option value="5">Rozmístění obyvatelstva</option>
+                  <option value="6">Rodinný stav</option>
+                  <option value="7">Vzdělání</option>
+                  </select></form>
+                </div>
+                <div id="jev"><form>Zobrazený údaj:<br>
+                    <select id="jevSelect" name="jevSelect">
+                    
+                </select></form>
+                </div>
+                </div>
+        
+        
+          <!-- </div> -->
+      
+    </aside>
+    <footer class="footer">Footer</footer>
+  </div> 
+  
+  
+  <script>
+    require([
+      "esri/views/MapView",
+      "esri/Map",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Expand"
+    ], (
+      MapView, Map, FeatureLayer, Expand
+    ) => {
+      let floodLayerView;
+
+      // flash flood warnings layer
+      const layer = new FeatureLayer({
+        portalItem: {
+          id: "48d95c2a8db049508f6ca57d6adba550"
+        },
+        outFields: ["idOkres"]
+      });
+
+      const map = new Map({
+        basemap: "streets-vector",
+        layers: [layer]
+      });
+
+      const view = new MapView({
+        map: map,
+        container: "viewDiv",
+        center: [15.79, 50.57],
+        zoom: 9
+      });
+
+      const seasonsNodes = document.querySelectorAll(`.season-item`);
+      const seasonsElement = document.getElementById("seasons-filter");
+
+      // click event handler for seasons choices
+      seasonsElement.addEventListener("click", filterBySeason);
+
+      // User clicked on Winter, Spring, Summer or Fall
+      // set an attribute filter on flood warnings layer view
+      // to display the warnings issued in that season
+      function filterBySeason(event) {
+        const selectedSeason = event.target.getAttribute("data-season");
+        floodLayerView.filter = {
+          where: "idOkres = '" + selectedSeason + "'"
+        };
+      }
+
+      view.whenLayerView(layer).then((layerView) => {
+        // flash flood warnings layer loaded
+        // get a reference to the flood warnings layerview
+        floodLayerView = layerView;
+
+        // set up UI items
+        seasonsElement.style.visibility = "visible";
+        const seasonsExpand = new Expand({
+          view: view,
+          content: seasonsElement,
+          expandIconClass: "esri-icon-filter",
+          group: "top-left"
+        });
+        //clear the filters when user closes the expand widget
+        seasonsExpand.watch("expanded", () => {
+          if (!seasonsExpand.expanded) {
+            floodLayerView.filter = null;
+          }
+        });
+        view.ui.add(seasonsExpand, "top-left");
+        // view.ui.add("titleDiv", "top-right");
+      });
+    });
+
+    function prevYear() {
+	    var op = document.getElementById("volsettings").getElementsByTagName("option");
+	    for (i=parseInt(rok)-1;i>=0;i--)
+	    {
+	      if (op[i].disabled == false) {break;}
+	    }
+	      if (i>=0)
+	    {
+	      $('#rokyRange').val(i);
+	      cngRok(i);
+	    }
+    }
+
+    function nextYear() {
+	    var op = document.getElementById("volsettings").getElementsByTagName("option");
+	    for (i=parseInt(rok)+1;i<10;i++) {
+	      if (op[i].disabled == false) {break;}
+	    }
+	      if (i<10){
+	        $('#rokyRange').val(i);
+	        cngRok(i);
+	      }
+    }
+
+    function cngRok(vol) {
+      var vrstvy = {
+        0:['vrstva0'],
+        1:['vrstva1'],
+        2:['vrstva2'],
+        3:['vrstva3'],
+        4:['vrstva4'],
+        5:['vrstva5'],
+        6:['vrstva6'],
+        7:['vrstva7'],
+        8:['vrstva8'],
+        9:['vrstva9']
+      };
+      var op = document.getElementById("volsettings").getElementsByTagName("option");
+      if (op[vol].disabled == false) {
+        a_vrstvy=vrstvy[vol];                
+      };
+      var op = document.getElementById("modulSelect").getElementsByTagName("option");
+
+    };
+
+    var moduly = [];
+    moduly['1'] = ["Počet obyvatel", "Bydlící"];
+    moduly['2'] = ["Česká", "Německá", "Slovenská"];
+    moduly['3'] = ["Počet domů", "Počet ovcí"];
+    moduly['4'] = ["Obydlí", "Polí"];
+    moduly['5'] = ["Vlevo", "Vpravo", "Na severu"];
+    moduly['6'] = ["Vdaná", "Ženatý", "Rozvedený"];
+    moduly['7'] = ["Základní", "Střední", "Vysokoškolské"];
+    document.querySelector("select[name='modulSelect']").addEventListener("change", function(){
+      var element = moduly[this.value.toString().toLowerCase()];
+      if (element)
+      {
+          var select = document.querySelector("select[name='jevSelect']").cloneNode();
+          var node = document.createElement("option"); 
+          node.value = 0;
+          node.setAttribute("disabled",true);
+          node.setAttribute("selected",true);
+          node.textContent = "Vyberte modul";
+          select.appendChild(node);
+          moduly[this.value.toString().toLowerCase()].forEach(function(element){
+            var node = document.createElement("option");
+            node.value = element;
+            node.textContent = element;
+            select.appendChild(node);
+          });
+          document.querySelector("select[name='jevSelect']").parentElement.replaceChild(select, document.querySelector("select[name='jevSelect']"));
+      }
+    }, false);
+
+
+  </script>
+</body>
+</html>

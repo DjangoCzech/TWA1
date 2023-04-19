@@ -1,0 +1,15 @@
+.rangeWithButtons {
+  display: grid;  
+  column-gap: 8px;
+  justify-items: center;
+  grid-template-columns: auto 1f auto;
+}
+.inputcss {
+    display: inline-block;
+    width: 100%;
+}
+.rokyRange {
+  text-align: center;
+  color: black;
+  width: 100%;
+}

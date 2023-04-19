@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="rangeWithButtons">
+      <button><<</button>
+      <div class="inputcss">
+        <input
+          type="range"
+          class="rokyRange"
+          min="0"
+          max="12"
+          list="yearsDatalist"
+          step="2"
+          value="12"
+        />
+        <datalist id="yearsDatalist">
+          <option value="0" label="1910"></option>
+          <option value="1" hidden label="1920"></option>
+          <option value="2" hidden label="1931"></option>
+          <option value="3" hidden label="1941"></option>
+          <option value="4" hidden label="1951"></option>
+          <option value="5" hidden label="1960"></option>
+          <option value="6" label="1971"></option>
+          <option value="7" hidden label="1980"></option>
+          <option value="8" hidden label="1990"></option>
+          <option value="9" hidden label="2000"></option>
+          <option value="10" hidden label="2011"></option>
+          <option value="11" hidden label="2021"></option>
+          <option value="12" hidden label="2031"></option>
+        </datalist>
+      </div>
+      <div id="button">
+        <button>>></button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posuvník</title>
+    <style>
+        :root {
+            --bord: 1px solid;
+        }
+        .panel {
+            float: right;
+            width: 300px;
+            border-left: 2px solid #9cc23d;
+            padding: 0px 10px 0px 10px;
+            height: 100%;
+            overflow-y: auto;
+            overflow-y: hidden;
+            border: var(--bord);
+        }
+        .posuvnik {
+            width: 100%;
+            text-align: center;
+            border: var(--bord);
+            display: block;
+        }
+        .popis {
+            border: var(--bord);
+            line-height: 18px;
+            height: 70px;
+            margin-top: 10px;
+        }
+        .prevB{
+            width: 40px;
+            height: 40px;
+            float: left;
+            display: inline-block;
+        }
+        button.art-button {
+            text-decoration: none;
+            font-size: 13px;
+            font-family: Tahoma,Arial,Helvetica,Sans-Serif;
+            font-weight: normal;
+            font-style: normal;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-align: center;
+            background-color: #9CC23D;
+            color: #FFFFFF;
+            margin: 0 5px 0 0 !important;
+            overflow: visible;
+            cursor: pointer;
+            text-indent: 0;
+            line-height: 31px;
+        }
+
+        .stred {
+            width: 200px;
+            display: inline-block;
+            border: var(--bord);
+        }
+        .labely {
+            width: 200px;
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            border: var(--bord);
+        }
+        .lRok {
+            line-height: 10px;
+            transform: rotate(-90deg);
+            display: inline-block;
+            text-align: center;
+            width: 20px;
+            vertical-align: middle;
+            position: relative;
+            top: -5px;
+            border: var(--bord);
+        }
+
+        .posuR {
+            display: inline-block;
+            width: 200px;
+            height: 40px;
+            margin: 0;
+        }
+        #rokyRange {
+            text-align: center;
+            color: black;
+            width: 190px;
+        }
+        .nextB {
+            width: 40px;
+            height: 40px;
+            float: right;
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Posuvník</h1>
+    <div class="panel">
+        <div class="popis"></div>
+
+    <div class="posuvnik">
+        <div class="prevB">
+            <button type="button" class="art-button"><<</button>
+        </div>
+        <div class="stred">
+            <div class="labely">
+                <div class="lRok" style="color: black;">1971</div>
+                <div class="lRok" style="color: black;">1981</div>
+                <div class="lRok" style="color: black;">1991</div>
+                <div class="lRok" style="color: black;">2001</div>
+                <div class="lRok" style="color: black;">2021</div>
+            </div>
+            <div class="posuR">
+                <input type="range" name="rokyRange" id="rokyRange"
+                min="0" max="4" list="volsettings" value="4">
+            </div>
+            
+            <datalist id = "volsettings">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </datalist>
+        </div>
+        <div class="nextB">
+            <button type="button" class="art-button">>></button>
+        </div>
+
+
+    </div>
+</div>
+
+    
+</body>
+</html>

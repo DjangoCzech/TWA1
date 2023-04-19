@@ -1,0 +1,9 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.box{
+    margin: 10px;
+    height: 250px;
+    background-color: #fff;
+}
